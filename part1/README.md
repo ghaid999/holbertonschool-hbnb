@@ -6,8 +6,7 @@
 2. High-Level Architecture
 3. Business Logic Layer
 4. API Interaction Flow
-5. Design Decisions
-6. Conclusion
+5. Conclusion
 
 ---
 
@@ -244,34 +243,8 @@
 
 ---
 
-# 5. Design Decisions
-
-## Layered Architecture
-
-> Explain why it was chosen.
-
-## Object-Oriented Design
-
-> Explain how inheritance, associations, and encapsulation are used.
-
-## SOLID Principles
-
-> Mention how the design follows SOLID principles.
-
-## UML Design Choices
-
-> Explain why relationships, multiplicities, and inheritance were modeled this way.
-
----
 
 # 6. Conclusion
 
 > Summarize the overall architecture and explain how this document will support the implementation of the HBnB application.
 
----
-
-# References
-
-- UML Documentation
-- Mermaid Documentation
-- Holberton Project Specification
