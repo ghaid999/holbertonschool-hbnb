@@ -244,7 +244,7 @@
 ---
 
 
-# 6. Conclusion
+# 5. Conclusion
 
 > Summarize the overall architecture and explain how this document will support the implementation of the HBnB application.
 
