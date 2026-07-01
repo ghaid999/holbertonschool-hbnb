@@ -58,7 +58,7 @@
 
 ## Overview
 
-> Introduce the business entities and their purpose.
+> The foolweng digram that explan the whol system inside the Business Logic Layer
 
 ### Class Diagram
 
@@ -70,7 +70,7 @@
 
 ### Role
 
-> Explain the purpose of the class.
+> The BaseEntity is the class that contain the atributs that is commen in all other class,so all the class inheret from BaseEntity. 
 
 ### Attributes
 
@@ -78,17 +78,13 @@
 - created_at
 - updated_at
 
-### Methods
-
-> Describe the methods (if any).
-
 ---
 
 ## User
 
 ### Role
 
-> Explain what a user represents.
+> The user class is themain class , in this class the user can register, update , and delete .
 
 ### Attributes
 
@@ -100,9 +96,9 @@
 
 ### Methods
 
-- register()
-- update_profile()
-- delete()
+- register(first_name, last_name, email, password) : void
+- update_profile(id, data) : void
+- delete(id) : void
 
 ---
 
@@ -110,7 +106,7 @@
 
 ### Role
 
-> Explain what a place represents.
+> in class place we have the information about the plece.
 
 ### Attributes
 
@@ -122,12 +118,12 @@
 
 ### Methods
 
-- create()
-- update()
-- delete()
-- list_all()
-- add_amenity()
-- remove_amenity()
+- create(title, description, price, latitude, longitude, owner_id) : void
+- update(id, data) : void
+- delete(id) : void
+- list_all() : List<Place>
+- add_amenity(amenity_id) : void
+- remove_amenity(amenity_id) : void
 
 ---
 
@@ -135,7 +131,7 @@
 
 ### Role
 
-> Explain what a review represents.
+> in class Review , a user can write a review , and a place have a reviews about the place.
 
 ### Attributes
 
@@ -144,10 +140,10 @@
 
 ### Methods
 
-- create()
-- update()
-- delete()
-- list_by_place()
+- create(place_id, user_id, rating, comment) : void
+- update(id, data) : void
+- delete(id) : void
+- list_by_place(place_id) : List<Review>
 
 ---
 
@@ -155,7 +151,7 @@
 
 ### Role
 
-> Explain what an amenity represents.
+> class Amenity , is the class that contain the Amenity about the place.
 
 ### Attributes
 
@@ -164,10 +160,10 @@
 
 ### Methods
 
-- create()
-- update()
-- delete()
-- list_all()
+- create(name, description) : void
+- update(id, data) : void
+- delete(id) : void
+- list_all() : List<Amenity>
 
 ---
 
@@ -175,23 +171,23 @@
 
 ### BaseEntity → Entities
 
-> Explain the inheritance.
+> The atruputs that share in all the Entities.
 
 ### User → Place
 
-> Explain the ownership relationship.
+> A user can have multible places.
 
 ### User → Review
 
-> Explain the review relationship.
+> A user can write multible Reviews about the places.
 
 ### Place → Review
 
-> Explain the place-review relationship.
+> A place can have multible review that writen by the user.
 
 ### Place ↔ Amenity
 
-> Explain the many-to-many relationship.
+> A place can have multible Amenity.
 
 ---
 
