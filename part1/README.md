@@ -58,11 +58,11 @@
 
 ## Overview
 
-> The foolweng digram that explan the whol system inside the Business Logic Layer
+The following class diagram illustrates the structure of the Business Logic Layer. It shows the main entities of the HBnB application, their attributes, methods, and the relationships between them.
 
-### Class Diagram
+## Class Diagram
 
-*(Insert the Class Diagram here.)*
+> *(Insert the Class Diagram here.)*
 
 ---
 
@@ -70,13 +70,13 @@
 
 ### Role
 
-> The BaseEntity is the class that contain the atributs that is commen in all other class,so all the class inheret from BaseEntity. 
+The BaseEntity class contains the common attributes shared by all other classes. Therefore, all entities inherit from BaseEntity.
 
 ### Attributes
 
-- id
-- created_at
-- updated_at
+- `id`
+- `created_at`
+- `updated_at`
 
 ---
 
@@ -84,21 +84,21 @@
 
 ### Role
 
-> The user class is themain class , in this class the user can register, update , and delete .
+The User class represents a registered user in the system. A user can register, update their profile, and delete their account. A user can also own places and write reviews.
 
 ### Attributes
 
-- first_name
-- last_name
-- email
-- password
-- is_admin
+- `first_name`
+- `last_name`
+- `email`
+- `password`
+- `is_admin`
 
 ### Methods
 
-- register(first_name, last_name, email, password) : void
-- update_profile(id, data) : void
-- delete(id) : void
+- `register(first_name, last_name, email, password) : void`
+- `update_profile(id, data) : void`
+- `delete(id) : void`
 
 ---
 
@@ -106,24 +106,24 @@
 
 ### Role
 
-> in class place we have the information about the plece.
+The Place class stores information about a property listed by a user. Each place belongs to one owner and can have multiple amenities and reviews.
 
 ### Attributes
 
-- title
-- description
-- price
-- latitude
-- longitude
+- `title`
+- `description`
+- `price`
+- `latitude`
+- `longitude`
 
 ### Methods
 
-- create(title, description, price, latitude, longitude, owner_id) : void
-- update(id, data) : void
-- delete(id) : void
-- list_all() : List<Place>
-- add_amenity(amenity_id) : void
-- remove_amenity(amenity_id) : void
+- `create(title, description, price, latitude, longitude, owner_id) : void`
+- `update(id, data) : void`
+- `delete(id) : void`
+- `list_all() : List`
+- `add_amenity(amenity_id) : void`
+- `remove_amenity(amenity_id) : void`
 
 ---
 
@@ -131,19 +131,19 @@
 
 ### Role
 
-> in class Review , a user can write a review , and a place have a reviews about the place.
+The Review class represents feedback written by a user for a specific place. Each review belongs to one user and one place.
 
 ### Attributes
 
-- rating
-- comment
+- `rating`
+- `comment`
 
 ### Methods
 
-- create(place_id, user_id, rating, comment) : void
-- update(id, data) : void
-- delete(id) : void
-- list_by_place(place_id) : List<Review>
+- `create(place_id, user_id, rating, comment) : void`
+- `update(id, data) : void`
+- `delete(id) : void`
+- `list_by_place(place_id) : List`
 
 ---
 
@@ -151,43 +151,51 @@
 
 ### Role
 
-> class Amenity , is the class that contain the Amenity about the place.
+The Amenity class represents the amenities that can be associated with a place.
 
 ### Attributes
 
-- name
-- description
+- `name`
+- `description`
 
 ### Methods
 
-- create(name, description) : void
-- update(id, data) : void
-- delete(id) : void
-- list_all() : List<Amenity>
+- `create(name, description) : void`
+- `update(id, data) : void`
+- `delete(id) : void`
+- `list_all() : List`
 
 ---
 
-## Relationships
+# Relationships
 
-### BaseEntity → Entities
+## BaseEntity → Entities
 
-> The atruputs that share in all the Entities.
+All entities inherit from BaseEntity, allowing them to share the common attributes `id`, `created_at`, and `updated_at`.
 
-### User → Place
+---
 
-> A user can have multible places.
+## User → Place
 
-### User → Review
+A user can own multiple places, while each place has exactly one owner.
 
-> A user can write multible Reviews about the places.
+---
 
-### Place → Review
+## User → Review
 
-> A place can have multible review that writen by the user.
+A user can write multiple reviews, and each review is written by one user.
 
-### Place ↔ Amenity
+---
 
-> A place can have multible Amenity.
+## Place → Review
+
+A place can have multiple reviews written by different users.
+
+---
+
+## Place ↔ Amenity
+
+A place can have multiple amenities, and the same amenity can be associated with multiple places. This represents a many-to-many relationship.
 
 ---
 
