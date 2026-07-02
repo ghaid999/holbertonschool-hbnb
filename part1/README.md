@@ -62,7 +62,7 @@ The following class diagram illustrates the structure of the Business Logic Laye
 
 ## Class Diagram
 
-> ![Class Diagram](ClassDigram .png)
+![Class Diagram](ClassDigram.png)
 
 ---
 
