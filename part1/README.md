@@ -14,15 +14,20 @@
 
 ## Purpose
 
-> in this project HB we desine a 
+In this project, we design the technical documentation for the HBnB application. This document explains the architecture of the system and will be used as a guide during the implementation phase.
 
 ## Project Overview
 
-> Briefly describe the HBnB Evolution application and its objectives.
+The HBnB project is a simplified Airbnb-like application.
+
+In this document, we create:
+- A **High-Level Package Diagram** to show the three-layer architecture of the system.
+- A **Class Diagram** to explain the Business Logic Layer and the relationships between its entities.
+- **Sequence Diagrams** to show how the system handles different API calls.
 
 ## Scope
 
-> Explain what this document covers.
+This document covers the design of the HBnB application, including the architecture, the entities, their relationships, and the interaction between the layers. It will be used as a guide in the next parts of the project.
 
 ---
 
@@ -246,11 +251,4 @@ A place can have multiple amenities, and the same amenity can be associated with
 ### Explaintory Note
 
 > The user sends a filtered request to view places. A loop fragment handles request retries in case of failure. An alt fragment checks the request validity; if invalid, it triggers an error message. Once validated, the system enters a second loop to repeatedly fetch matching places from the database until the data is successfully retrieved, then returns and displays the results to the user.
-
----
-
-
-# 5. Conclusion
-
-> Summarize the overall architecture and explain how this document will support the implementation of the HBnB application.
 
