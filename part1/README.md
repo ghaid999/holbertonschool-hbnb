@@ -34,7 +34,7 @@
 
 ### Package Diagram
 
-*(Insert the Package Diagram here.)*
+![Package Diagram](PackageDiagram.png)
 
 ### Presentation Layer
 
