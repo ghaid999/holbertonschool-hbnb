@@ -34,7 +34,7 @@ This project is built upon a layered architecture to enforce a strict **separati
 
 ### Package Diagram
 
-![Package Diagram](PackageDiagram.png)
+<img src="PackageDiagram.png" width="450" alt="Package Diagram">
 
 ### Presentation Layer
 
