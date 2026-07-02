@@ -209,7 +209,7 @@ A place can have multiple amenities, and the same amenity can be associated with
 
 ## Overview
 
-> Briefly explain what the sequence diagrams represent.
+> the next sequence diagrams are provided for four key API calls in the HBnB application. These diagrams illustrate the interactions between the Presentation Layer (Services, API), Business Logic Layer (Models), and Persistence Layer (Database), demonstrating how requests are processed across the system.
 
 ---
 
@@ -252,3 +252,5 @@ A place can have multiple amenities, and the same amenity can be associated with
 
 > The user sends a filtered request to view places. A loop fragment handles request retries in case of failure. An alt fragment checks the request validity; if invalid, it triggers an error message. Once validated, the system enters a second loop to repeatedly fetch matching places from the database until the data is successfully retrieved, then returns and displays the results to the user.
 
+# 5. Conclusion
+The UML diagrams provide a clear representation of the HBnB Evolution application's architecture, business logic, and system interactions. Together, they establish a solid foundation for the application's implementation and future development.
