@@ -30,7 +30,7 @@
 
 ## Overview
 
-> Explain the layered architecture used in the project.
+This project is built upon a layered architecture to enforce a strict **separation of concerns**. By dividing the application into distinct, interconnected layers, the system becomes more scalable, easier to test, and simpler to maintain over time.
 
 ### Package Diagram
 
@@ -38,20 +38,21 @@
 
 ### Presentation Layer
 
-> Explain its responsibilities.
+> This layer serves as the entry point for user interaction. It is strictly responsible for handling user interfaces, capturing inputs, and formatting the data presented back to the client. It ensures the UI remains completely decoupled from core system operations.
 
 ### Business Logic Layer
 
-> Explain its responsibilities.
+> Serving as the core of the application, this layer contains all domain rules, calculations, and operational workflows. It processes requests originating from the Presentation layer and dictates how data should be validated and transformed.
 
 ### Persistence Layer
 
-> Explain its responsibilities.
+> This layer manages all data storage, retrieval, and database interactions. It abstracts the underlying database technologies, ensuring the Business Logic layer can save or request data without needing to know the specific details of the database implementation.
 
 ### Facade Pattern
 
-> Explain why the Facade pattern is used and how it connects the layers.
-
+> To streamline communication within this architecture, the **Facade Pattern** is implemented. 
+*   **Why it is used:** It provides a simplified, unified interface to the complex subsystems hidden within the Business Logic layer. 
+*   **How it connects the layers:** Instead of the Presentation layer interacting directly with multiple different business classes, it communicates solely through the Facade. This significantly reduces system coupling, minimizes dependencies, and protects the outer layers from being affected by internal code changes.
 ---
 
 # 3. Business Logic Layer
