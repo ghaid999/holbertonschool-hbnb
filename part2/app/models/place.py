@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """DPlace class."""
-from app.models.base_entity import BaseEntity
+from app.models.BaseEntity import BaseEntity
 from app.models.user import User
 
 
