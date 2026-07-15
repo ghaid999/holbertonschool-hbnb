@@ -2,6 +2,7 @@ from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
+from app.models.review import Review
 
 
 class HBnBFacade:
@@ -10,12 +11,7 @@ class HBnBFacade:
         self.place_repo = InMemoryRepository()
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
-
-    # Placeholder method for creating a user
-    def create_user(self, user_data):
-        # Logic will be implemented in later tasks
-        pass
-
+        
    # User Methods
     def create_user(self, user_data):
         user = User(**user_data)
@@ -119,7 +115,8 @@ class HBnBFacade:
 
     def update_review(self, review_id, review_data):
         self.review_repo.update(review_id, review_data)
-
+        return self.review_repo.get(review_id)
+        
     def delete_review(self, review_id):
         review = self.review_repo.get(review_id)
         
