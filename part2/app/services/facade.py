@@ -82,47 +82,31 @@ class HBnBFacade:
 
     #start of review
     def create_review(self, review_data):
-        user = self.user_repo.get(review_data['user_id'])
-        if not user:
-            raise KeyError('Invalid input data')
-        del review_data['user_id']
-        review_data['user'] = user
-        
-        place = self.place_repo.get(review_data['place_id'])
-        if not place:
-            raise KeyError('Invalid input data')
-        del review_data['place_id']
-        review_data['place'] = place
+    user = self.user_repo.get(review_data['user_id'])
 
-        review = Review(**review_data)
-        
-        self.review_repo.add(review)
-        user.add_review(review)
-        place.add_review(review)
-        return review
+    if not user:
+        raise KeyError('User not found')
 
-    def get_review(self, review_id):
-        return self.review_repo.get(review_id)
+    place = self.place_repo.get(review_data['place_id'])
 
-    def get_all_reviews(self):
-        return self.review_repo.get_all()
+    if not place:
+        raise KeyError('Place not found')
 
-    def get_reviews_by_place(self, place_id):
-        place = self.place_repo.get(place_id)
-        if not place:
-            raise KeyError('Place not found')
-        return place.reviews
+    if place.owner.id == user.id:
+        raise ValueError(
+            'User cannot review their own place'
+        )
 
-    def update_review(self, review_id, review_data):
-        self.review_repo.update(review_id, review_data)
-        return self.review_repo.get(review_id)
-        
-    def delete_review(self, review_id):
-        review = self.review_repo.get(review_id)
-        
-        user = self.user_repo.get(review.user.id)
-        place = self.place_repo.get(review.place.id)
+    del review_data['user_id']
+    review_data['user'] = user
 
-        user.delete_review(review)
-        place.delete_review(review)
-        self.review_repo.delete(review_id)
+    del review_data['place_id']
+    review_data['place'] = place
+
+    review = Review(**review_data)
+
+    self.review_repo.add(review)
+    user.add_review(review)
+    place.add_review(review)
+
+    return review
