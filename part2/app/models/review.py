@@ -63,3 +63,13 @@ class Review(BaseEntity):
         if not isinstance(value, User):
             raise ValueError("user must be a valid User instance")
         self._user = value
+
+    
+    def to_dict(self):
+		return {
+			'id': self.id,
+			'text': self.text,
+			'rating': self.rating,
+			'place_id': self.place.id,
+			'user_id': self.user.id
+		}
