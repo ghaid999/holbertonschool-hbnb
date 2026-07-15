@@ -111,3 +111,27 @@ class Place(BaseEntity):
         if not isinstance(amenity, Amenity):
             raise ValueError("amenity must be a valid Amenity instance")
         self.amenities.append(amenity)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'price': self.price,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'owner_id': self.owner.id
+        }
+    
+    def to_dict_list(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'price': self.price,
+            'latitude': self.latitude,
+            'longitude': self.longitude,
+            'owner': self.owner.to_dict(),
+            'amenities': self.amenities,
+            'reviews': self.reviews
+        }
