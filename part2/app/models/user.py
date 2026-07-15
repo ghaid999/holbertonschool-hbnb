@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """User class."""
 import re
-from app.models.base_entity import BaseEntity
+from app.models.BaseEntity import BaseEntity
 
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
