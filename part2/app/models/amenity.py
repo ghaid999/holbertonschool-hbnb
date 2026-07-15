@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Amenity class."""
-from app.models.base_entity import BaseEntity
+from app.models.BaseEntity import BaseEntity
 
 class Amenity(BaseEntity):
     """Represents an amenity that can be associated with a place.
