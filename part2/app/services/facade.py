@@ -98,11 +98,8 @@ def create_user(self, user_data):
         del review_data['place_id']
         review_data['place'] = place
 
-        rating = review_data.get('rating')
-        if rating is None or rating < 1 or rating > 5:
-            raise ValueError('Rating must be between 1 and 5')
-
         review = Review(**review_data)
+        
         self.review_repo.add(review)
         user.add_review(review)
         place.add_review(review)
