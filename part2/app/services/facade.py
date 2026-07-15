@@ -15,29 +15,31 @@ class HBnBFacade:
 
     #start of places
     def create_place(self, place_data):
-        """Create and store a new place."""
+        user = self.user_repo.get_by_attribute('id', place_data['owner_id'])
+        if not user:
+            raise KeyError('Invalid input data')
+        del place_data['owner_id']
+        place_data['owner'] = user
+        amenities = place_data.pop('amenities', None)
+        if amenities:
+            for a in amenities:
+                amenity = self.get_amenity(a['id'])
+                if not amenity:
+                    raise KeyError('Invalid input data')
         place = Place(**place_data)
         self.place_repo.add(place)
+        user.add_place(place)
+        if amenities:
+            for amenity in amenities:
+                place.add_amenity(amenity)
         return place
 
     def get_place(self, place_id):
-        """Retrieve a place by ID."""
         return self.place_repo.get(place_id)
-    
+
     def get_all_places(self):
-        """Retrieve all places."""
         return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
-        """Update place details if the place exists."""
-        place = self.place_repo.get(place_id)
-        if not place:
-            return None
-        
-        for key in ['title', 'description', 'price', 'latitude', 'longitude', 'owner_id', 'amenities']:
-            if key in place_data:
-                setattr(place, key, place_data[key])
-        
         self.place_repo.update(place_id, place_data)
-        return place
-        #end of places
+    #end of places
