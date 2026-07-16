@@ -25,6 +25,7 @@ hbnb/
 │   │       ├── amenities.py
 │   ├── models/
 │   │   ├── __init__.py
+│   │   ├── BsaeEntity.py
 │   │   ├── user.py
 │   │   ├── place.py
 │   │   ├── review.py
