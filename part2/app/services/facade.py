@@ -109,4 +109,8 @@ class HBnBFacade:
         self.review_repo.add(review)
         user.add_review(review)
         place.add_review(review)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 62dac003af6bbd4a2b514d444e3b1ea1c55f78d3
         return review

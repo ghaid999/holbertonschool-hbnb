@@ -64,7 +64,6 @@ class Review(BaseEntity):
             raise ValueError("user must be a valid User instance")
         self._user = value
 
-    
     def to_dict(self):
         return {
             'id': self.id,
