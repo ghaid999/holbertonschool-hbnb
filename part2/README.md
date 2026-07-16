@@ -57,7 +57,6 @@ hbnb/
 ## 3. Installation
 
 ```bash
-# from the hbnb/ directory
 pip install -r requirements.txt
 ```
 
