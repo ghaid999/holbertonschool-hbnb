@@ -112,7 +112,7 @@ class Place(BaseEntity):
             raise ValueError("amenity must be a valid Amenity instance")
         self.amenities.append(amenity)
 
-    def to_dict(self):
+    def to_dict_list(self):
         return {
             'id': self.id,
             'title': self.title,
@@ -120,7 +120,19 @@ class Place(BaseEntity):
             'price': self.price,
             'latitude': self.latitude,
             'longitude': self.longitude,
-            'owner_id': self.owner.id
+            'owner': {
+                'id': self.owner.id,
+                'first_name': self.owner.first_name,
+                'last_name': self.owner.last_name,
+                'email': self.owner.email
+            },
+            'amenities': [
+                {
+                    'id': amenity.id,
+                    'name': amenity.name
+                }
+                for amenity in self.amenities
+            ]
         }
     
     def to_dict_list(self):
