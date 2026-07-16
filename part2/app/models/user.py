@@ -18,6 +18,8 @@ class User(BaseEntity):
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
+        self.places = []
+        self.reviews = []
 
     @property
     def first_name(self):
@@ -68,3 +70,11 @@ class User(BaseEntity):
         if not isinstance(value, bool):
             raise ValueError("is_admin must be a boolean")
         self._is_admin = value
+
+    def add_place(self, place):
+        """Add a place owned by the user."""
+        self.places.append(place)
+
+    def add_review(self, review):
+        """Add a review written by the user."""
+        self.reviews.append(review)
