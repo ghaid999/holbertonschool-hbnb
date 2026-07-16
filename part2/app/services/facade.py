@@ -116,3 +116,7 @@ class HBnBFacade:
 
     def get_all_reviews(self):
         return self.review_repo.get_all()
+
+    def update_review(self, review_id, review_data):
+        self.review_repo.update(review_id, review_data)
+        return self.review_repo.get(review_id)
