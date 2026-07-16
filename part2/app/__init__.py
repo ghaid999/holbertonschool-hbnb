@@ -22,4 +22,10 @@ def create_app():
     api.add_namespace(reviews_ns, path="/api/v1/reviews")
     api.add_namespace(amenities_ns, path="/api/v1/amenities")
 
+    @app.errorhandler(ValueError)
+    def handle_validation_error(error):
+      return {
+        "error": str(error)
+      }, 400
+
     return app
