@@ -110,3 +110,9 @@ class HBnBFacade:
         user.add_review(review)
         place.add_review(review)
         return review
+
+    def get_review(self, review_id):
+        return self.review_repo.get(review_id)
+
+    def get_all_reviews(self):
+        return self.review_repo.get_all()
