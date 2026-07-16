@@ -78,35 +78,35 @@ class HBnBFacade:
 
     def update_place(self, place_id, place_data):
         self.place_repo.update(place_id, place_data)
+        return self.place_repo.get(place_id)
     #end of places
 
     #start of review
     def create_review(self, review_data):
-    user = self.user_repo.get(review_data['user_id'])
+        user = self.user_repo.get(review_data['user_id'])
 
-    if not user:
-        raise KeyError('User not found')
+        if not user:
+            raise KeyError('User not found')
 
-    place = self.place_repo.get(review_data['place_id'])
+        place = self.place_repo.get(review_data['place_id'])
 
-    if not place:
-        raise KeyError('Place not found')
+        if not place:
+            raise KeyError('Place not found')
 
-    if place.owner.id == user.id:
-        raise ValueError(
-            'User cannot review their own place'
-        )
+        if place.owner.id == user.id:
+            raise ValueError(
+                'User cannot review their own place'
+            )
 
-    del review_data['user_id']
-    review_data['user'] = user
+        del review_data['user_id']
+        review_data['user'] = user
 
-    del review_data['place_id']
-    review_data['place'] = place
+        del review_data['place_id']
+        review_data['place'] = place
 
-    review = Review(**review_data)
+        review = Review(**review_data)
 
-    self.review_repo.add(review)
-    user.add_review(review)
-    place.add_review(review)
-
-    return review
+        self.review_repo.add(review)
+        user.add_review(review)
+        place.add_review(review)
+        return review
