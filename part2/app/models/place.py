@@ -135,7 +135,7 @@ class Place(BaseEntity):
             ]
         }
     
-    def to_dict_list(self):
+    def to_dict(self):
         return {
             'id': self.id,
             'title': self.title,
@@ -143,7 +143,5 @@ class Place(BaseEntity):
             'price': self.price,
             'latitude': self.latitude,
             'longitude': self.longitude,
-            'owner': self.owner.to_dict(),
-            'amenities': self.amenities,
-            'reviews': self.reviews
+            'owner_id': self.owner.id
         }
