@@ -36,6 +36,8 @@ hbnb/
 │   ├── persistence/
 │       ├── __init__.py
 │       ├── repository.py
+├── tests/
+│   ├── testscurl.sh
 ├── run.py
 ├── config.py
 ├── requirements.txt
