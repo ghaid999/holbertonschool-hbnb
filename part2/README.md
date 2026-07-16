@@ -1,101 +1,155 @@
-## Project Structure
-```
+# HBnB
+
+## 1. Project Title & Short Description
+
+In this phase of the project, we implement the core functionality of the
+application using Python and Flask. We build the Presentation and
+Business Logic layers, along with the methods and API endpoints based
+on what we designed in Part 1.
+
+## 2. Project Structure
+
+This is our structure:
+
+```text
 hbnb/
 ├── app/
 │   ├── __init__.py
 │   ├── api/
 │   │   ├── __init__.py
-│   │   └── v1/
+│   │   ├── v1/
 │   │       ├── __init__.py
 │   │       ├── users.py
 │   │       ├── places.py
 │   │       ├── reviews.py
-│   │       └── amenities.py
+│   │       ├── amenities.py
 │   ├── models/
 │   │   ├── __init__.py
-│   │   ├─ base.py
 │   │   ├── user.py
 │   │   ├── place.py
 │   │   ├── review.py
-│   │   └── amenity.py
+│   │   ├── amenity.py
 │   ├── services/
 │   │   ├── __init__.py
-│   │   └── facade.py
-│   └── persistence/
+│   │   ├── facade.py
+│   ├── persistence/
 │       ├── __init__.py
-│       └── repository.py
-│   └── tests/
-│   │   ├── __init__.py
-│   │   ├── test_endpoints.py
-│   │   └── test_curl.sh
+│       ├── repository.py
 ├── run.py
 ├── config.py
 ├── requirements.txt
-└── README.md
-
+├── README.md
 ```
-Overview
 
-[Write a brief overview of the project and its main objectives.]
+- `app/api/` — this is the Presentation layer. Each file defines a
+  Flask-RESTx `Namespace` with its endpoints.
+- `app/models/` — this is the Business Logic layer. It handles the UUID
+  and the important operations that make sure each object keeps the
+  right information.
+- `app/services/facade.py` — this is the Facade layer. It's the
+  connection between the API and the rest of the application.
+- `app/persistence/repository.py` — this is the Persistence layer.
+- `run.py` — this is where we run the application.
+- `config.py` — contains the necessary settings.
+- `requirements.txt` — flask and flask-restx.
+- `README.md` — the overview of this phase.
 
-[Objective 1]
-[Objective 2]
-[Objective 3]
-[Objective 4]
+## 3. Installation
 
-Team & Task Allocation (Part 2)
+```bash
+# from the hbnb/ directory
+pip install -r requirements.txt
+```
 
-| Name | Tasks | Responsibilities / Deliverables |
-|---|---|---|
-| Geed | *Task 0, Task 2* | Project setup & package initialization (structure, Flask app scaffolding, in-memory repository, Facade placeholders). Implement *User endpoints* (POST/GET/PUT, list users), ensure *no password in responses*, correct status codes and Swagger docs. |
-| Shatha | *Task 1, Task 3* | Implement core business logic classes (User, Place, Review, Amenity) with required attributes, validation, and relationships. Implement *Amenity endpoints* (POST/GET/PUT), integrate with Facade and repository, ensure consistent serialization & Swagger. |
-| Dana | *Task 4, Task 5| Implement *Place endpoints* (POST/GET/PUT) with validation (price/lat/lon) and related data (owner + amenities). Implement *Review endpoints* (POST/GET/PUT/DELETE) + retrieve reviews for a place + update place to include reviews.
+## 4. Running the Application
 
-Repository & References
-Repo: [GitHub Repository Link]
-Work Path: [Project Path]
-Reference Docs: [Reference Documents Location]
-Task 0 Summary
+```bash
+python3 run.py
+```
 
-[Write the Task 0 title, description, implementation details, and deliverables here.]
+Once running, view the interactive API docs at
+`http://127.0.0.1:5000/api/v1/`.
 
-Task 1 Summary
+## 5. Business Logic Layer
 
-[Write the Task 1 title, description, implementation details, and deliverables here.]
+**BaseEntity**: all the other classes inherit from this.
+- `id`: a UUID4 string, generated automatically on creation.
+- `created_at` / `updated_at`: timestamps.
+- `update(data)`: updates the data.
 
-Task 2 Summary
+**User**: the user class.
+- `first_name`, `last_name`(string): must be a string and not empty, 50-character max.
+- `email`(string): must be in the correct format.
+- `is_admin` (Boolean): indicates whether the user has admin privileges.
 
-[Write the Task 2 title, description, implemented endpoints, validation, and deliverables here.]
+**Place**: the place class.
+- `title` (String): must be a string and not empty, 100-character max.
+- `description` (String): optional.
+- `price` (Float): must be a positive value.
+- `latitude` and `longitude` (Float): must be numbers, not empty, and within range.
+- `owner` (User): tells us who owns the place.
 
-Task 3 Summary
+**Review**: the review class.
+- `text` (String): must be a string and not empty.
+- `rating` (Integer): the rating for the place, must be an integer, not empty, and within range.
+- `place` (Place): the relationship between the review and the place.
+- `user` (User): the relationship between the review and the user who wrote it.
 
-[Write the Task 3 title, description, implemented endpoints, validation, and deliverables here.]
+**Amenity**: the amenity class.
+- `name` (String): the name of the amenity, must be a string and not empty.
 
-Task 4 Summary
+### Relationships
 
-[Write the Task 4 title, description, implemented endpoints, validation rules, and deliverables here.]
+- A User can own many Places (one-to-many).
+- A Place can have many Reviews (one-to-many).
+- A Place can have many Amenities, and an Amenity can belong to many
+  Places (many-to-many).
 
-Task 5 Summary
+## 6. Endpoints
 
-[Write the Task 5 title, description, implemented endpoints, validation rules, and deliverables here.]
+| Method | Endpoint                              | Description             |
+|--------|----------------------------------------|--------------------------|
+| POST   | `/api/v1/users/`                        | Create a user            |
+| GET    | `/api/v1/users/`                        | List all users           |
+| GET    | `/api/v1/users/<id>`                    | Get a user by id         |
+| PUT    | `/api/v1/users/<id>`                    | Update a user            |
+| POST   | `/api/v1/places/`                       | Create a place           |
+| GET    | `/api/v1/places/`                       | List all places          |
+| GET    | `/api/v1/places/<id>`                   | Get a place by id        |
+| PUT    | `/api/v1/places/<id>`                   | Update a place           |
+| POST   | `/api/v1/reviews/`                      | Create a review          |
+| GET    | `/api/v1/reviews/`                      | List all reviews         |
+| GET    | `/api/v1/reviews/<id>`                  | Get a review by id       |
+| PUT    | `/api/v1/reviews/<id>`                  | Update a review          |
+| DELETE | `/api/v1/reviews/<id>`                  | Delete a review          |
+| GET    | `/api/v1/reviews/places/<place_id>/reviews` | List reviews for a place |
+| POST   | `/api/v1/amenities/`                    | Create an amenity        |
+| GET    | `/api/v1/amenities/`                    | List all amenities       |
+| GET    | `/api/v1/amenities/<id>`                | Get an amenity by id     |
+| PUT    | `/api/v1/amenities/<id>`                | Update an amenity        |
 
-Task 6 Summary
+Invalid input returns a `400` status with `{"error": "<message>"}`.
 
-[Write the Task 6 title, description, testing methods, test cases, and testing results here.]
+## 7. Usage Examples
 
-## API Surface (v1)
+```python
+from app.models.user import User
+from app.models.place import Place
 
-- **Users:** `GET /api/v1/users/`, `POST /api/v1/users/`, `GET /api/v1/users/<id>`, `PUT /api/v1/users/<id>`
-- **Amenities:** `GET /api/v1/amenities/`, `POST /api/v1/amenities/`, `GET /api/v1/amenities/<id>`, `PUT /api/v1/amenities/<id>`
-- **Places:** `GET /api/v1/places/`, `POST /api/v1/places/`, `GET /api/v1/places/<id>`, `PUT /api/v1/places/<id>`, `GET /api/v1/places/<id>/reviews`
-- **Reviews:** `GET /api/v1/reviews/`, `POST /api/v1/reviews/`, `GET /api/v1/reviews/<id>`, `PUT /api/v1/reviews/<id>`, `DELETE /api/v1/reviews/<id>`
+# Create a user
+owner = User(first_name="Gheed", last_name="Majed",
+             email="gheed.@gmail.com")
 
-Testing
+# Create a place linked to that user
+place = Place(title="Tuwaiq Academy", description="A place to study",
+              price=0, latitude=37.7749, longitude=-122.4194,
+              owner=owner)
 
-[Write how to run the tests and mention the testing tools used.]
+print(place.title, place.owner.first_name)
+```
 
-[Testing command]
-Notes
-[Project note]
-[Project note]
-[Project note]
+## 8. Running Tests
+
+```bash
+python3 -m unittest discover -s tests
+```
