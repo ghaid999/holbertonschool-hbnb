@@ -2,6 +2,7 @@
 """User class."""
 import re
 from app.models.BaseEntity import BaseEntity
+from app import bcrypt
 
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
@@ -10,7 +11,7 @@ class User(BaseEntity):
     """Represents a user of the HBnB application.
     """
 
-    def __init__(self, first_name, last_name, email, is_admin=False):
+    def __init__(self, first_name, last_name, email, password, is_admin=False):
         """Initialize a new User instance.
         """
         super().__init__()
@@ -18,9 +19,21 @@ class User(BaseEntity):
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
+
+        self.password = ""
+        self.hash_password(password)
+        
         self.places = []
         self.reviews = []
 
+    def hash_password(self, password):
+        """Hashes the password before storing it."""
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def verify_password(self, password):
+        """Verifies if the provided password matches the hashed password."""
+        return bcrypt.check_password_hash(self.password, password)
+        
     @property
     def first_name(self):
         """The user first name."""
