@@ -1,80 +1,70 @@
-#!/usr/bin/python3
-"""User class."""
-import re
-from app.models.BaseEntity import BaseEntity
+from flask_restx import Namespace, Resource, fields
+from app.services import facade
 
-EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+api = Namespace('users', description='User operations')
 
+user_model = api.model('User', {
+    'first_name': fields.String(required=True, description='First name of the user'),
+    'last_name': fields.String(required=True, description='Last name of the user'),
+    'email': fields.String(required=True, description='Email of the user')
+})
 
-class User(BaseEntity):
-    """Represents a user of the HBnB application.
-    """
+user_update_model = api.model('UserUpdate', {
+    'first_name': fields.String(description='First name'),
+    'last_name': fields.String(description='Last name'),
+    'email': fields.String(description='Email')
+})
 
-    def __init__(self, first_name, last_name, email, is_admin=False):
-        """Initialize a new User instance.
-        """
-        super().__init__()
-        self.first_name = first_name
-        self.last_name = last_name
-        self.email = email
-        self.is_admin = is_admin
-        self.places = []
-        self.reviews = []
+@api.route('/')
+class UserList(Resource):
+    @api.expect(user_model, validate=True)
+    @api.response(201, 'User successfully created')
+    @api.response(400, 'Email already registered')
+    @api.response(400, 'Invalid input data')
+    def post(self):
+        user_data = api.payload
 
-    @property
-    def first_name(self):
-        """The user first name."""
-        return self._first_name
+        existing_user = facade.get_user_by_email(user_data['email'])
+        if existing_user:
+            return {'error': 'Email already registered'}, 400
 
-    @first_name.setter
-    def first_name(self, value):
-        if not value or not isinstance(value, str):
-            raise ValueError("first_name is required and must be a string")
-        if len(value) > 50:
-            raise ValueError("first_name must be 50 characters or fewer")
-        self._first_name = value
+        new_user = facade.create_user(user_data)
+        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
 
-    @property
-    def last_name(self):
-        """The user last name."""
-        return self._last_name
+    @api.response(200, 'List of users retrieved successfully')
+    def get(self):
+        users = facade.get_all_users()
+        return [{'id': u.id, 'first_name': u.first_name, 'last_name': u.last_name, 'email': u.email} for u in users], 200
 
-    @last_name.setter
-    def last_name(self, value):
-        if not value or not isinstance(value, str):
-            raise ValueError("last_name is required and must be a string")
-        if len(value) > 50:
-            raise ValueError("last_name must be 50 characters or fewer")
-        self._last_name = value
+@api.route('/<user_id>')
+class UserResource(Resource):
+    @api.response(200, 'User details retrieved successfully')
+    @api.response(404, 'User not found')
+    def get(self, user_id):
+        user = facade.get_user(user_id)
+        if not user:
+            return {'error': 'User not found'}, 404
+        return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
 
-    @property
-    def email(self):
-        """The user email address."""
-        return self._email
+    @api.expect(user_update_model, validate=True)
+    @api.response(200, 'User successfully updated')
+    @api.response(404, 'User not found')
+    @api.response(400, 'Invalid input data')
+    def put(self, user_id):
+        user_data = api.payload
+        user = facade.get_user(user_id)
+        
+        if not user:
+            return {'error': 'User not found'}, 404
+        
+        if not user_data:
+            return {'error': 'Invalid input data'}, 400
 
-    @email.setter
-    def email(self, value):
-        if not value or not isinstance(value, str):
-            raise ValueError("email is required and must be a string")
-        if not EMAIL_REGEX.match(value):
-            raise ValueError("email must be a valid email address")
-        self._email = value
+        if 'email' in user_data:
+            existing_user = facade.get_user_by_email(user_data['email'])
+            if existing_user and existing_user.id != user_id:
+                return {'error': 'Email already registered'}, 400
 
-    @property
-    def is_admin(self):
-        """Whether the user has administrative privileges."""
-        return self._is_admin
-
-    @is_admin.setter
-    def is_admin(self, value):
-        if not isinstance(value, bool):
-            raise ValueError("is_admin must be a boolean")
-        self._is_admin = value
-
-    def add_place(self, place):
-        """Add a place owned by the user."""
-        self.places.append(place)
-
-    def add_review(self, review):
-        """Add a review written by the user."""
-        self.reviews.append(review)
+            
+        updated_user = facade.update_user(user_id, user_data)
+        return {'id': updated_user.id, 'first_name': updated_user.first_name, 'last_name': updated_user.last_name, 'email': updated_user.email}, 200
