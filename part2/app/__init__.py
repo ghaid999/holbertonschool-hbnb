@@ -12,9 +12,11 @@ bcrypt = Bcrypt()
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
 
-    app.config.from_object(config_class)
-
-    bcrypt.init_app(app)
+def create_app(config_class=config.DevelopmentConfig):
+   #
+   # Existent code with app Flask instance
+   # ...
+   bcrypt.init_app(app)
     
     api = Api(
         app,
