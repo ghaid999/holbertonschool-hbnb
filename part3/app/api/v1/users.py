@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 from app.services import facade
 
 api = Namespace('users', description='User operations')
@@ -13,16 +14,23 @@ user_model = api.model('User', {
 user_update_model = api.model('UserUpdate', {
     'first_name': fields.String(description='First name'),
     'last_name': fields.String(description='Last name'),
-    'email': fields.String(description='Email')
+    'email': fields.String(description='Email'),
+    'password': fields.String(description='Password')
 })
 
 @api.route('/')
 class UserList(Resource):
+    @jwt_required()
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
+    @api.response(403, 'Admin privileges required')
     def post(self):
+        claims = get_jwt()
+        if not claims.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
+        
         user_data = api.payload
 
         existing_user = facade.get_user_by_email(user_data['email'])
@@ -47,11 +55,21 @@ class UserResource(Resource):
             return {'error': 'User not found'}, 404
         return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
 
+    @jwt_required()
     @api.expect(user_update_model, validate=True)
     @api.response(200, 'User successfully updated')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input data')
+    @api.response(403, 'Unauthorized action')
     def put(self, user_id):
+        current_user = get_jwt()
+        current_user_id = get_jwt_identity()
+        is_admin = current_user.get('is_admin', False)
+
+        # If not admin, check if the user is updating their own data
+        if not is_admin and str(current_user_id) != str(user_id):
+            return {'error': 'Unauthorized action'}, 403
+        
         user_data = api.payload
         user = facade.get_user(user_id)
         
@@ -61,11 +79,17 @@ class UserResource(Resource):
         if not user_data:
             return {'error': 'Invalid input data'}, 400
 
-        if 'email' in user_data:
-            existing_user = facade.get_user_by_email(user_data['email'])
-            if existing_user and existing_user.id != user_id:
+        # If regular user, prevent them from changing email or password
+        if not is_admin:
+            if 'email' in user_data or 'password' in user_data:
+                return {'error': 'You cannot modify email or password.'}, 400
+
+        # Check email uniqueness if email is being updated (by an admin)
+        email = user_data.get('email')
+        if email:
+            existing_user = facade.get_user_by_email(email)
+            if existing_user and str(existing_user.id) != str(user_id):
                 return {'error': 'Email already registered'}, 400
 
-            
         updated_user = facade.update_user(user_id, user_data)
         return {'id': updated_user.id, 'first_name': updated_user.first_name, 'last_name': updated_user.last_name, 'email': updated_user.email}, 200

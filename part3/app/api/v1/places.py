@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 from app.services import facade
 
 api = Namespace('places', description='Place operations')
@@ -97,15 +97,17 @@ class PlaceResource(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
 
-        current_user = get_jwt_identity()
+        current_user_claims = get_jwt()
+        is_admin = current_user_claims.get('is_admin', False)
+        current_user_id = get_jwt_identity()
 
-        # Only the owner can update the place
-        if str(place.owner_id) != current_user:
+        # Allow update if the user is an admin OR if they own the place
+        if not is_admin and str(place.owner_id) != str(current_user_id):
             return {'error': 'Unauthorized action'}, 403
 
         place_data = api.payload
 
-        # Prevent changing the owner
+        # Prevent changing the owner unless done carefully, but keep it standard
         place_data.pop('owner_id', None)
 
         try:
