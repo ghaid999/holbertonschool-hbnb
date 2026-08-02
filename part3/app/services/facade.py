@@ -118,9 +118,6 @@ class HBnBFacade:
         self.review_repo.add(review)
         user.add_review(review)
         place.add_review(review)
-<<<<<<< HEAD
-        return review
-=======
         return review
 
     def get_review(self, review_id):
@@ -141,4 +138,3 @@ class HBnBFacade:
             
         self.review_repo.delete(review_id)
         return True
->>>>>>> 88d548540c180e750183adb3aefea5aece03d052

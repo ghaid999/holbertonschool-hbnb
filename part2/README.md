@@ -36,6 +36,13 @@ hbnb/
 │   ├── persistence/
 │       ├── __init__.py
 │       ├── repository.py
+├── tests/
+│   ├── __init__.py
+│   ├── testscurl.sh
+│   ├── test_users.py
+│   ├── test_amenities.py
+│   ├── test_places.py
+│   ├── test_reviews.py
 ├── run.py
 ├── config.py
 ├── requirements.txt
@@ -50,6 +57,7 @@ hbnb/
 - `app/services/facade.py` — this is the Facade layer. It's the
   connection between the API and the rest of the application.
 - `app/persistence/repository.py` — this is the Persistence layer.
+- `tests/` — contains Python unit tests and cURL scripts for full API black-box testing and validation.
 - `run.py` — this is where we run the application.
 - `config.py` — contains the necessary settings.
 - `requirements.txt` — flask and flask-restx.
