@@ -13,34 +13,31 @@ bcrypt = Bcrypt()
 jwt = JWTManager()
 db = SQLAlchemy()
 
+
 def create_app(config_class="config.DevelopmentConfig"):
-    app = Flask(__name__)
-    db.init_app(app)
+  app = Flask(__name__)
+  app.config.from_object(config_class)
+  db.init_app(app)
+  bcrypt.init_app(app)
+  jwt.init_app(app)
 
-app.config.from_object(config_class)
-   #
-   # Existent code with app Flask instance
-   # ...
-   bcrypt.init_app(app)
-    jwt.init_app(app)
-
-    api = Api(
+  api = Api(
         app,
-        version='1.0',
-        title='HBnB API',
-        description='HBnB Application API'
+    version="1.0",
+    title="HBnB API",
+    description="HBnB Application API"
     )
 
-    api.add_namespace(users_ns, path="/api/v1/users")
-    api.add_namespace(places_ns, path="/api/v1/places")
-    api.add_namespace(reviews_ns, path="/api/v1/reviews")
-    api.add_namespace(amenities_ns, path="/api/v1/amenities")
-    api.add_namespace(auth_ns, path="/api/v1/auth")
+  api.add_namespace(users_ns, path="/api/v1/users")
+  api.add_namespace(places_ns, path="/api/v1/places")
+  api.add_namespace(reviews_ns, path="/api/v1/reviews")
+  api.add_namespace(amenities_ns, path="/api/v1/amenities")
+  api.add_namespace(auth_ns, path="/api/v1/auth")
 
-    @app.errorhandler(ValueError)
-    def handle_validation_error(error):
+  @app.errorhandler(ValueError)
+  def handle_validation_error(error):
       return {
         "error": str(error)
       }, 400
 
-    return app
+  return app
