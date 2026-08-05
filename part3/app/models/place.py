@@ -22,6 +22,17 @@ class Place(BaseEntity):
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
+    owner_id = db.Column(db.String(36), db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+
+    owner = db.relationship("User", backref="places")
+    amenities = db.relationship("Amenity", secondary="place_amenity", backref="places")
+
+    reviews = db.relationship(
+        "Review",
+        back_populates="place",
+        cascade="all, delete-orphan",
+        primaryjoin="Place.id == Review.place_id"
+    )
 
     '''
     @property
@@ -113,7 +124,7 @@ class Place(BaseEntity):
             raise ValueError("owner must be a valid User instance")
         self._owner = value
     
-
+    '''
     def add_review(self, review):
         """Add a review to the place.
         """
@@ -143,7 +154,8 @@ class Place(BaseEntity):
                     session.add(amenity)
                     session.flush()
                 self.amenities.append(amenity)
-    '''
+
+
     def to_dict_list(self):
         return {
             'id': self.id,
