@@ -27,7 +27,7 @@ class HBnBFacade:
         password = user_data.pop('password')
         
         user = User(**user_data)
-        user.hash_password(user_data['password'])
+        user.hash_password(password)
         #self.user_repo.add(user)
         db.session.add(user)
         db.session.commit()
@@ -80,7 +80,7 @@ class HBnBFacade:
 
     def create_place(self, place_data):
         #user = self.user_repo.get(owner_id) if hasattr(self.user_repo, 'get') else self.user_repo.get_by_attribute('id', owner_id)
-        user = self.user_repository.get(place_data['owner_id'])
+        user = self.user_repo.get(place_data['owner_id'])
         if not user:
             raise KeyError('Invalid owner ID')
 
