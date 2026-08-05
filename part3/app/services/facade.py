@@ -68,20 +68,17 @@ class HBnBFacade:
         return self.amenity_repo.get(amenity_id)
 
     def create_place(self, place_data):
-        user = self.user_repo.get_by_attribute('id', place_data['owner_id'])
-        if not user:
-            raise KeyError('Invalid input data')
-        
+        owner_id = place_data.pop('owner_id', None)
+        if owner_id:
+            user = self.user_repo.get(owner_id) if hasattr(self.user_repo, 'get') else self.user_repo.get_by_attribute('id', owner_id)
+            if not user:
+                raise KeyError('Invalid owner ID')
+
         amenities = place_data.pop("amenities", [])
-        amenity_objects = []
-
-
         for amenity_id in amenities:
             amenity = self.get_amenity(amenity_id)
             if not amenity:
                 raise KeyError("Invalid amenity ID")
-            amenity_objects.append(amenity)
-
 
         place = Place(**place_data)
 
@@ -97,7 +94,7 @@ class HBnBFacade:
     def update_place(self, place_id, place_data):
         self.place_repo.update(place_id, place_data)
         return self.place_repo.get(place_id)
-    '''
+        '''
     #start of places
     def create_place(self, place_data):
 

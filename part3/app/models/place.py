@@ -23,6 +23,7 @@ class Place(BaseEntity):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
 
+    '''
     @property
     def title(self):
         """ The title of the place."""
@@ -46,7 +47,7 @@ class Place(BaseEntity):
         if value is not None and not isinstance(value, str):
             raise ValueError("description must be a string")
         self._description = value
-    '''
+
     @property
     def price(self):
         """The price per night for the place."""
@@ -100,7 +101,7 @@ class Place(BaseEntity):
         if not (-180 <= value <= 180):
             raise ValueError("Longitude must be between -180 and 180")
         return value
-
+    '''
     @property
     def owner(self):
         """The User instance who owns the place."""
@@ -142,7 +143,7 @@ class Place(BaseEntity):
                     session.add(amenity)
                     session.flush()
                 self.amenities.append(amenity)
-
+    '''
     def to_dict_list(self):
         return {
             'id': self.id,
@@ -151,19 +152,19 @@ class Place(BaseEntity):
             'price': self.price,
             'latitude': self.latitude,
             'longitude': self.longitude,
-            'owner': {
-                'id': self.owner.id,
-                'first_name': self.owner.first_name,
-                'last_name': self.owner.last_name,
-                'email': self.owner.email
-            },
-            'amenities': [
-                {
-                    'id': amenity.id,
-                    'name': amenity.name
-                }
-                for amenity in self.amenities
-            ]
+            #'owner': {
+             #   'id': self.owner.id,
+              #  'first_name': self.owner.first_name,
+               # 'last_name': self.owner.last_name,
+                #'email': self.owner.email
+           # },
+           # 'amenities': [
+            #    {
+             #       'id': amenity.id,
+              #      'name': amenity.name
+               # }
+                #for amenity in self.amenities
+            #]
         }
     
     def to_dict(self):
@@ -174,5 +175,5 @@ class Place(BaseEntity):
             'price': self.price,
             'latitude': self.latitude,
             'longitude': self.longitude,
-            'owner_id': self.owner.id
+           # 'owner_id': self.owner.id
         }
