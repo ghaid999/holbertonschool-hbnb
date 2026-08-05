@@ -42,13 +42,13 @@ class HBnBFacade:
 
     def create_amenity(self, amenity_data):
         """Creates a new amenity."""
-        existing_amenity = self.amenity_repo.get_amenity_by_name(amenity_data['name'])
+        name = amenity_data.get('name')
+        existing_amenity = self.amenity_repo.get_amenity_by_name(name)
         if existing_amenity:
             raise ValueError("Amenity with this name already exists")
 
         amenity = Amenity(**amenity_data)
-        db.session.add(amenity)
-        db.session.commit()
+        self.amenity_repo.add(amenity)
         return amenity
 
     def get_amenity_by_name(self, name):
