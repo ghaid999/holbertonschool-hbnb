@@ -9,8 +9,9 @@ from datetime import datetime
 from sqlalchemy.sql import func
 
 
-class BaseEntity:
+class BaseEntity(db.Model):
     """Base class for all entities."""
+    __abstract__ = True
     
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     created_at = db.Column(db.DateTime, default=func.now())

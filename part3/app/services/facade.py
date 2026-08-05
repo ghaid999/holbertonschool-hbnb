@@ -1,13 +1,18 @@
- from app.persistence.repository import SQLAlchemyRepository
+from app.persistence.repository import SQLAlchemyRepository
+from app.persistence.user_repository import UserRepository
+from app.persistence.place_repository import PlaceRepository
+from app.persistence.amenity_repository import AmenityRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.review import Review
+from app import db
+
 
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = SQLAlchemyRepository(User)
+        self.user_repo = UserRepository()
         self.place_repo = SQLAlchemyRepository(Place)
         self.review_repo = SQLAlchemyRepository(Review)
         self.amenity_repo = SQLAlchemyRepository(Amenity)
@@ -15,6 +20,7 @@ class HBnBFacade:
    # User Methods
     def create_user(self, user_data):
         user = User(**user_data)
+        user.hash_password(user_data['password'])
         self.user_repo.add(user)
         return user
 
@@ -22,7 +28,7 @@ class HBnBFacade:
         return self.user_repo.get(user_id)
 
     def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute('email', email)
+        return self.user_repo.get_user_by_email(email)
 
     def get_all_users(self):
         return self.user_repo.get_all()
@@ -35,9 +41,21 @@ class HBnBFacade:
     # Amenity Methods
 
     def create_amenity(self, amenity_data):
+        """Creates a new amenity."""
+        existing_amenity = self.amenity_repo.get_amenity_by_name(amenity_data['name'])
+        if existing_amenity:
+            raise ValueError("Amenity with this name already exists")
+
         amenity = Amenity(**amenity_data)
-        self.amenity_repo.add(amenity)
+        db.session.add(amenity)
+        db.session.commit()
         return amenity
+
+    def get_amenity_by_name(self, name):
+        """Retrieve an amenity by its name using the AmenityRepository."""
+        amenity = self.amenity_repo.get_amenity_by_name(name)
+        return amenity
+    
 
     def get_amenity(self, amenity_id):
         return self.amenity_repo.get(amenity_id)
@@ -49,8 +67,40 @@ class HBnBFacade:
         self.amenity_repo.update(amenity_id, amenity_data)
         return self.amenity_repo.get(amenity_id)
 
+    def create_place(self, place_data):
+        user = self.user_repo.get_by_attribute('id', place_data['owner_id'])
+        if not user:
+            raise KeyError('Invalid input data')
+        
+        amenities = place_data.pop("amenities", [])
+        amenity_objects = []
+
+
+        for amenity_id in amenities:
+            amenity = self.get_amenity(amenity_id)
+            if not amenity:
+                raise KeyError("Invalid amenity ID")
+            amenity_objects.append(amenity)
+
+
+        place = Place(**place_data)
+
+        self.place_repo.add(place)
+        return place
+
+    def get_place(self, place_id):
+        return self.place_repo.get(place_id)
+
+    def get_all_places(self):
+        return self.place_repo.get_all()
+
+    def update_place(self, place_id, place_data):
+        self.place_repo.update(place_id, place_data)
+        return self.place_repo.get(place_id)
+    '''
     #start of places
     def create_place(self, place_data):
+
         user = self.user_repo.get_by_attribute('id', place_data['owner_id'])
         if not user:
             raise KeyError('Invalid input data')
@@ -77,6 +127,8 @@ class HBnBFacade:
         for amenity in amenity_objects:
             place.add_amenity(amenity)
 
+        db.session.add(place)
+        db.session.commit()
         return place
 
     def get_place(self, place_id):
@@ -89,7 +141,7 @@ class HBnBFacade:
         self.place_repo.update(place_id, place_data)
         return self.place_repo.get(place_id)
     #end of places
-
+    '''
     #start of review
     def create_review(self, review_data):
         user = self.user_repo.get(review_data['user_id'])
