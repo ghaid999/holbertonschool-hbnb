@@ -1,10 +1,7 @@
 from app.persistence.repository import SQLAlchemyRepository
-<<<<<<< HEAD
 from app.persistence.user_repository import UserRepository
 from app.persistence.place_repository import PlaceRepository
 from app.persistence.amenity_repository import AmenityRepository
-=======
->>>>>>> d3f8c260ce2f0a664de4a198251110db221ab6d8
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
