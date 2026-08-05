@@ -112,7 +112,7 @@ class Place(BaseEntity):
         if not isinstance(value, User):
             raise ValueError("owner must be a valid User instance")
         self._owner = value
-
+    
 
     def add_review(self, review):
         """Add a review to the place.
