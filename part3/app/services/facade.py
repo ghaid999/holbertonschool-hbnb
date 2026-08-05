@@ -20,9 +20,17 @@ class HBnBFacade:
         
    # User Methods
     def create_user(self, user_data):
+
+        if 'password' not in user_data or not user_data['password']:
+            raise ValueError("Password is required")
+
+        password = user_data.pop('password')
+        
         user = User(**user_data)
         user.hash_password(user_data['password'])
-        self.user_repo.add(user)
+        #self.user_repo.add(user)
+        db.session.add(user)
+        db.session.commit()
         return user
 
     def get_user(self, user_id):
@@ -49,7 +57,9 @@ class HBnBFacade:
             raise ValueError("Amenity with this name already exists")
 
         amenity = Amenity(**amenity_data)
-        self.amenity_repo.add(amenity)
+        #self.amenity_repo.add(amenity)
+        db.session.add(amenity)
+        db.session.commit()
         return amenity
 
     def get_amenity_by_name(self, name):
@@ -69,11 +79,10 @@ class HBnBFacade:
         return self.amenity_repo.get(amenity_id)
 
     def create_place(self, place_data):
-        owner_id = place_data.pop('owner_id', None)
-        if owner_id:
-            user = self.user_repo.get(owner_id) if hasattr(self.user_repo, 'get') else self.user_repo.get_by_attribute('id', owner_id)
-            if not user:
-                raise KeyError('Invalid owner ID')
+        #user = self.user_repo.get(owner_id) if hasattr(self.user_repo, 'get') else self.user_repo.get_by_attribute('id', owner_id)
+        user = self.user_repository.get(place_data['owner_id'])
+        if not user:
+            raise KeyError('Invalid owner ID')
 
         amenities = place_data.pop("amenities", [])
         for amenity_id in amenities:
@@ -83,7 +92,9 @@ class HBnBFacade:
 
         place = Place(**place_data)
 
-        self.place_repo.add(place)
+        #self.place_repo.add(place)
+        db.session.add(place)
+        db.session.commit()
         return place
 
     def get_place(self, place_id):
@@ -157,17 +168,17 @@ class HBnBFacade:
                 'User cannot review their own place'
             )
 
-        del review_data['user_id']
-        review_data['user'] = user
+       # del review_data['user_id']
+        # review_data['user'] = user
 
-        del review_data['place_id']
-        review_data['place'] = place
+        # del review_data['place_id']
+       #  review_data['place'] = place
 
         review = Review(**review_data)
 
-        self.review_repo.add(review)
-        user.add_review(review)
-        place.add_review(review)
+       # self.review_repo.add(review)
+        db.session.add(review)
+        db.session.commit()
         return review
 
     def get_review(self, review_id):
@@ -188,3 +199,14 @@ class HBnBFacade:
             
         self.review_repo.delete(review_id)
         return True
+
+    def authenticate_user(self, email, password):
+        """Authenticate a user by email and password."""
+        user = self.get_user_by_email(email)
+        if user and user.verify_password(password):
+            return user
+        return None
+
+    def get_review_by_place_and_user(self, place_id, user_id):
+        """Retrieve a review by place_id and user_id."""
+        return Review.query.filter_by(place_id=place_id, user_id=user_id).first()

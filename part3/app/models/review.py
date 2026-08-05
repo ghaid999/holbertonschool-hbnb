@@ -2,6 +2,8 @@
 """Defines the Review class."""
 from app.models.BaseEntity import BaseEntity
 from app.models.user import User
+from app import db
+from sqlalchemy.orm import validates
 
 
 class Review(BaseEntity):

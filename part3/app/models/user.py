@@ -9,7 +9,7 @@ from sqlalchemy.orm import validates
 EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
-class User(BaseEntity):
+class User(BaseEntity, db.Model):
     """Represents a user of the HBnB application.
     """
     __tablename__ = 'users'
@@ -77,7 +77,7 @@ class User(BaseEntity):
 
 
     '''
-    #من هنا مب فاهمه ليه احتجنا اللي تحت؟
+  
     @property
     def is_admin(self):
         """Whether the user has administrative privileges."""
@@ -88,7 +88,7 @@ class User(BaseEntity):
         if not isinstance(value, bool):
             raise ValueError("is_admin must be a boolean")
         self.is_admin = value
-    '''
+ 
     
     def add_place(self, place):
         """Add a place owned by the user."""
@@ -97,7 +97,7 @@ class User(BaseEntity):
     def add_review(self, review):
         """Add a review written by the user."""
         self.reviews.append(review)
-'''  
+ 
     @property
     def first_name(self):
         """The user first name."""
@@ -136,7 +136,7 @@ class User(BaseEntity):
         if not EMAIL_REGEX.match(value):
             raise ValueError("email must be a valid email address")
         self._email = value
-'''
+    '''
 
 
 

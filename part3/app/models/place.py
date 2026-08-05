@@ -164,6 +164,9 @@ class Place(BaseEntity):
             'price': self.price,
             'latitude': self.latitude,
             'longitude': self.longitude,
+            'owner': self.owner.to_dict(),
+            'amenities': [amenity.to_dict() for amenity in self.amenities],
+            'reviews': [review.to_dict() for review in self.reviews]
             #'owner': {
              #   'id': self.owner.id,
               #  'first_name': self.owner.first_name,
@@ -187,5 +190,5 @@ class Place(BaseEntity):
             'price': self.price,
             'latitude': self.latitude,
             'longitude': self.longitude,
-           # 'owner_id': self.owner.id
+            'owner_id': self.owner.id
         }
