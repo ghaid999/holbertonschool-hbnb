@@ -62,4 +62,3 @@ erDiagram
 | User → Review | One-to-many | `Review.user_id` references `User.id`; a user can write many reviews |
 | Place → Review | One-to-many | `Review.place_id` references `Place.id`; a place can receive many reviews |
 | Place ↔ Amenity | Many-to-many | Resolved through the `Place_Amenity` join table, whose composite primary key is `(place_id, amenity_id)` |
-
