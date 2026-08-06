@@ -27,9 +27,9 @@ class UserList(Resource):
     @api.response(400, 'Invalid input data')
     @api.response(403, 'Admin privileges required')
     def post(self):
-        #claims = get_jwt()
-        #if not claims.get('is_admin'):
-            #return {'error': 'Admin privileges required'}, 403
+        claims = get_jwt()
+        if not claims.get('is_admin'):
+            return {'error': 'Admin privileges required'}, 403
         
         user_data = api.payload
 

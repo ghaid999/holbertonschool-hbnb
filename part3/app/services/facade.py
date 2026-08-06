@@ -96,6 +96,7 @@ class HBnBFacade:
         db.session.add(place)
         db.session.commit()
         return place
+    
 
     def get_place(self, place_id):
         return self.place_repo.get(place_id)
