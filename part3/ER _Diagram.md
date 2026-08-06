@@ -63,10 +63,3 @@ erDiagram
 | Place → Review | One-to-many | `Review.place_id` references `Place.id`; a place can receive many reviews |
 | Place ↔ Amenity | Many-to-many | Resolved through the `Place_Amenity` join table, whose composite primary key is `(place_id, amenity_id)` |
 
-## Bonus - extending the model (optional exploration)
-
-The task suggests exploring how a new `Reservation` entity might fit in.
-A reservation links a `User` (who books) to a `Place` (what's booked), so it
-would introduce two new one-to-many relationships without changing anything
-already in the schema above:
-
