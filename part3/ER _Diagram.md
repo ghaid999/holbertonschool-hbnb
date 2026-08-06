@@ -70,21 +70,3 @@ A reservation links a `User` (who books) to a `Place` (what's booked), so it
 would introduce two new one-to-many relationships without changing anything
 already in the schema above:
 
-```mermaid
-erDiagram
-  USER ||--o{ RESERVATION : books
-  PLACE ||--o{ RESERVATION : is_booked_in
-
-  RESERVATION {
-    char36 id PK
-    date start_date
-    date end_date
-    char36 user_id FK
-    char36 place_id FK
-    timestamp created_at
-    timestamp updated_at
-  }
-```
-
-This is exploratory only - it is not part of the Task 9 SQL schema and is not
-implemented in the current database.
