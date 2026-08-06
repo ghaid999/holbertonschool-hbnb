@@ -9,7 +9,7 @@
 -- Matches User.hash_password() in app/models/user.py
 -- ------------------------------------------------------------
 
-/* INSERT INTO users (id, first_name, last_name, email, password, is_admin, created_at, updated_at)
+INSERT INTO users (id, first_name, last_name, email, password, is_admin, created_at, updated_at)
  VALUES (
     '36c9050e-ddd3-4c3b-9731-9f487208bbc1',
     'Admin',
@@ -20,7 +20,7 @@
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
 );
-*/
+
 -- ------------------------------------------------------------
 -- Initial Amenities
 -- ------------------------------------------------------------
