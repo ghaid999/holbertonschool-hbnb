@@ -28,23 +28,32 @@ hbnb/
 │   │   ├── place.py
 │   │   ├── review.py
 │   │   ├── amenity.py
+│   │   ├── place_amenity.py
 │   ├── persistence/
 │   │   ├── __init__.py
 │   │   ├── repository.py
+│   │   ├── amenity_repository.py
+│   │   ├── place_repository.py
+│   │   ├── review_repository.py
+│   │   ├── user_repository.py
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── facade.py
-├── sql/
+├── sql_scripts/
 │   ├── 1_schema.sql
 │   ├── 2_initial_data.sql
-│   ├── 3_crud_test.sql
+│   ├── 3_rest_crud.sql
 ├── tests/
 │   ├── __init__.py
 │   ├── test_users.py
 │   ├── test_places.py
 │   ├── test_reviews.py
 │   ├── test_amenities.py
+│   ├── testcurl.py
+├── ER_Diagram.md
 ├── run.py
+├── run_seed.py
+├── hbnb.bd
 ├── config.py
 ├── requirements.txt
 ├── README.md
@@ -145,7 +154,7 @@ Attributes:
 * first_name
 * last_name
 * email
-* password (stored as a bcrypt hash)
+* password 
 * is_admin
 
 Validation:
@@ -230,11 +239,6 @@ Protected endpoints require the following HTTP header:
 ```
 Authorization: Bearer <JWT_TOKEN>
 ```
-
-The token contains:
-
-* User ID
-* Admin status (`is_admin`)
 
 Role-based authorization is enforced as follows:
 
@@ -384,7 +388,7 @@ Default amenities:
 
 ---
 
-## 3_crud_test.sql
+## 3_test_crud.sql
 
 Validates SQL functionality through:
 
@@ -402,35 +406,8 @@ It also verifies:
 
 ---
 
-# 11. Usage Example
 
-```python
-from app.models.user import User
-from app.models.place import Place
-
-user = User(
-    first_name="John",
-    last_name="Doe",
-    email="john@example.com",
-    password="password123"
-)
-
-place = Place(
-    title="Beach House",
-    description="Sea view",
-    price=250,
-    latitude=21.5,
-    longitude=39.2,
-    owner=user
-)
-
-print(place.title)
-print(place.owner.first_name)
-```
-
----
-
-# 12. Running Tests
+# 11. Running Tests
 
 ## API Testing
 
@@ -464,25 +441,3 @@ Verified operations include:
 
 ---
 
-# 13. Technologies Used
-
-* Python 3
-* Flask
-* Flask-RESTx
-* SQLAlchemy
-* Flask-Bcrypt
-* Flask-JWT-Extended
-* SQLite
-* SQL
-* Swagger UI
-* REST API
-* JWT Authentication
-* Bcrypt Password Hashing
-
----
-
-# 14. Authors
-
-HBnB Evolution – Holberton School Project
-
-Part 3 focuses on database integration, authentication, authorization, SQL scripting, and complete REST API implementation using Flask and SQLAlchemy.
