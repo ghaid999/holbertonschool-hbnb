@@ -46,4 +46,19 @@ def create_app(config_class="config.DevelopmentConfig"):
             "error": str(error)
       }, 400
 
+
+    @jwt.invalid_token_loader
+    def invalid_token_callback(error):
+        return {
+            'error': 'Invalid token',
+            'message': 'Signature verification failed.'
+        }, 401
+
+    @jwt.invalid_token_loader
+    def invalid_token_callback(error):
+        return {
+            'error': 'Invalid token',
+            'message': 'Signature verification failed.'
+        }, 401
+
     return app

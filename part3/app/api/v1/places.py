@@ -117,7 +117,6 @@ class PlaceResource(Resource):
         except Exception as e:
             return {'error': str(e)}, 400
 
-
 @api.route('/<place_id>/amenities')
 class PlaceAmenities(Resource):
 
@@ -143,12 +142,10 @@ class PlaceAmenities(Resource):
             if not a:
                 return {'error': 'Invalid input data'}, 400
 
-        for amenity in amenities_data:
-            place.add_amenity(amenity)
+            if a not in place.amenities:
+                place.add_amenity(a)
 
         return {'message': 'Amenities added successfully'}, 200
-
-
 @api.route('/<place_id>/reviews/')
 class PlaceReviewList(Resource):
 
