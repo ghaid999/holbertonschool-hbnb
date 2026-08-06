@@ -1,8 +1,6 @@
 # HBnB - Database ER Diagram (Task 10)
 
 This diagram reflects the database schema defined in `part3/sql_scripts/`
-(Task 9), keeping the two tasks consistent as required.
-
 
 ```mermaid
 erDiagram
