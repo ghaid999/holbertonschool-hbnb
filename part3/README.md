@@ -66,7 +66,7 @@ hbnb/
 * **app/services/facade.py** — Implements the Facade pattern and connects the API with the persistence layer.
 * **app/persistence/repository.py** — SQLAlchemy repository responsible for all CRUD operations.
 * **app/api/v1/auth.py** — Authentication endpoints using JWT.
-* **sql/** — Raw SQL scripts for schema generation, initial data insertion, and CRUD validation.
+* **sql_scripts/** — Raw SQL scripts for schema generation, initial data insertion, and CRUD validation.
 * **tests/** — API validation and testing scripts.
 * **run.py** — Starts the Flask application.
 * **config.py** — Application configuration.
