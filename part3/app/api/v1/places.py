@@ -137,19 +137,14 @@ class PlaceAmenities(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
 
-        amenity_objects = []
         for amenity in amenities_data:
             a = facade.get_amenity(amenity['id'])
 
             if not a:
                 return {'error': 'Invalid input data'}, 400
-            amenity_objects.append(a)
 
-        for a in amenity_objects:
-            place.add_amenity(a)
-
-        from app import db
-        db.session.commit()
+        for amenity in amenities_data:
+            place.add_amenity(amenity)
 
         return {'message': 'Amenities added successfully'}, 200
 
