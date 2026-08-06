@@ -1,4 +1,4 @@
-# HBnB - Database ER Diagram (Task 10)
+# HBnB - Database ER Diagram 
 
 This diagram reflects the database schema defined in `part3/sql_scripts/`
 
