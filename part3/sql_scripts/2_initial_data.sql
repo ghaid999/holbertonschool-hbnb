@@ -8,6 +8,8 @@
 -- Password 'admin1234' hashed with bcrypt (flask-bcrypt, cost 12)
 -- Matches User.hash_password() in app/models/user.py
 -- ------------------------------------------------------------
+import sqlite3
+
 INSERT INTO users (id, first_name, last_name, email, password, is_admin, created_at, updated_at)
 VALUES (
     '36c9050e-ddd3-4c3b-9731-9f487208bbc1',

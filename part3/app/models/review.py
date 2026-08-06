@@ -9,6 +9,7 @@ from sqlalchemy.orm import validates
 class Review(BaseEntity):
     """Represents a review left by a user for a place.
     """
+    __tablename__ = 'reviews'
 
     text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
